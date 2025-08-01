@@ -3,20 +3,16 @@ from typing import Any, AsyncIterator
 import json_stream
 from aiohttp import ClientSession, ClientResponse
 
-from . import AbstractHTTPClient, AsyncStreamAdapter
+from . import AsyncStreamAdapter
 
 
-class HTTPClient(AbstractHTTPClient):
+class HTTPClient:
     def __init__(self, *, base_url: str = "", headers: dict[str, Any] = None) -> None:
         self._base_url = base_url
         self._headers = headers
         if self._headers is None:
             self._headers = {}
         self._session = ClientSession(base_url=base_url, headers=headers)
-
-    @property
-    def session(self) -> ClientSession:
-        return self._session
 
     @property
     def base_url(self) -> str:
@@ -42,7 +38,7 @@ class HTTPClient(AbstractHTTPClient):
             raise TypeError("headers must be dict or None")
 
     async def close(self) -> None:
-        await self.session.close()
+        await self._session.close()
 
     @staticmethod
     async def __response(response: ClientResponse) -> Any:
@@ -61,7 +57,7 @@ class HTTPClient(AbstractHTTPClient):
             url = self.base_url
         if headers is None:
             headers = self.headers
-        async with self.session.request(
+        async with self._session.request(
             method=method, url=url, headers=headers, json=json
         ) as response:
             return await self.__response(response)
@@ -140,7 +136,7 @@ class HTTPClient(AbstractHTTPClient):
             url = self.base_url
         if headers is None:
             headers = self.headers
-        async with self.session.request(
+        async with self._session.request(
             method=method, url=url, headers=headers, json=json
         ) as response:
             async for item in self.__stream_response(response, json_path):
@@ -214,3 +210,6 @@ class HTTPClient(AbstractHTTPClient):
 
     async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
         await self.close()
+
+    def __repr__(self) -> str:
+        return f"HTTPClient({self.base_url!r}, {self.headers!r})"
