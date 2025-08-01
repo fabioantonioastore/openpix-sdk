@@ -1,2 +1,2 @@
 # openpix-sdk
-Async OpenPix SDK using httpx as http client
+Async OpenPix SDK using aiohttp as http client
