@@ -132,7 +132,7 @@ class HTTPClient(AbstractHTTPClient):
         *,
         method: str,
         url: str = None,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> AsyncIterator:
@@ -147,7 +147,11 @@ class HTTPClient(AbstractHTTPClient):
                 yield item
 
     async def stream_get(
-        self, *, url: str = None, json_path: str, headers: dict[str, Any] = None
+        self,
+        *,
+        url: str = None,
+        json_path: str = "item",
+        headers: dict[str, Any] = None,
     ) -> AsyncIterator:
         async for item in self.stream(
             method="GET", url=url, json_path=json_path, headers=headers
@@ -158,7 +162,7 @@ class HTTPClient(AbstractHTTPClient):
         self,
         *,
         url: str = None,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> AsyncIterator:
@@ -171,7 +175,7 @@ class HTTPClient(AbstractHTTPClient):
         self,
         *,
         url: str = None,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> AsyncIterator:
@@ -184,7 +188,7 @@ class HTTPClient(AbstractHTTPClient):
         self,
         *,
         url: str = None,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> AsyncIterator:
@@ -194,7 +198,11 @@ class HTTPClient(AbstractHTTPClient):
             yield item
 
     async def stream_delete(
-        self, *, url: str = None, json_path: str, headers: dict[str, Any] = None
+        self,
+        *,
+        url: str = None,
+        json_path: str = "item",
+        headers: dict[str, Any] = None,
     ) -> AsyncIterator:
         async for item in self.stream(
             method="DELETE", url=url, json_path=json_path, headers=headers

@@ -50,7 +50,7 @@ class AbstractHTTPClient(ABC):
         *,
         method: str,
         url: str,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> Any:
@@ -58,7 +58,7 @@ class AbstractHTTPClient(ABC):
 
     @abstractmethod
     async def stream_get(
-        self, *, url: str, json_path: str, headers: dict[str, Any]
+        self, *, url: str, json_path: str = "item", headers: dict[str, Any]
     ) -> Any:
         pass
 
@@ -67,7 +67,7 @@ class AbstractHTTPClient(ABC):
         self,
         *,
         url: str,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> Any:
@@ -78,7 +78,7 @@ class AbstractHTTPClient(ABC):
         self,
         *,
         url: str,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> Any:
@@ -89,7 +89,7 @@ class AbstractHTTPClient(ABC):
         self,
         *,
         url: str,
-        json_path: str,
+        json_path: str = "item",
         headers: dict[str, Any] = None,
         json: dict[str, Any] = None,
     ) -> Any:
@@ -97,7 +97,7 @@ class AbstractHTTPClient(ABC):
 
     @abstractmethod
     async def stream_delete(
-        self, *, url: str, json_path: str, headers: dict[str, Any] = None
+        self, *, url: str = "item", json_path: str, headers: dict[str, Any] = None
     ) -> Any:
         pass
 
