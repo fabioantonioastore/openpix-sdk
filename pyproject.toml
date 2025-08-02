@@ -35,4 +35,4 @@ Homepage = "https://github.com/fabioantonioastore/async-openpix-sdk"
 Issues = "https://github.com/fabioantonioastore/async-openpix-sdk/issues"
 
 [tool.hatch.build]
-packages = "openpix"
+packages = ["openpix"]
