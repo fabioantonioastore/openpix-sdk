@@ -7,6 +7,8 @@ PRODUCTION_URL = "https://api.openpix.com.br/api/v1/"
 
 class OpenPix:
     def __init__(self, *, app_id: str, sandbox: bool = False) -> None:
+        if app_id is None:
+            raise "No AppID found"
         self._headers = {"Authorization": app_id}
         if sandbox:
             self._url = SANDBOX_URL

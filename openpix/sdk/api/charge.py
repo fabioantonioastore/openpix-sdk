@@ -4,15 +4,17 @@ from typing import Any, AsyncIterator
 
 from . import API
 from openpix.utils.http import HTTPClient
+from openpix.utils.enums import ChargeType
+from openpix.entities import Customer, Split
 
 
 class ChargeAPI(API):
     def __init__(self, *, url: str, headers: dict[str, Any]) -> None:
         super().__init__(url=url, headers=headers)
 
-    async def get_image_qr_code(self, *, correlation_id: str, size: int = 1024) -> str:
+    async def get_image_qr_code(self, *, payment_link_id: str, size: int = 1024) -> str:
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
-            endpoint = f"charge/brcode/image/{correlation_id}?size={size}"
+            endpoint = f"charge/brcode/image/{payment_link_id}?size={size}"
             return await http_client.get(url=endpoint, headers=self._headers)
 
 
@@ -73,14 +75,23 @@ class ChargeAPI(API):
 
             yield http_client.stream_get(url=endpoint, headers=self._headers, json_path="charge")
 
-    async def create(self, *, value: int, return_existing: bool = True) -> dict[str, Any]:
+    async def create(self, *, value: int, splits: list[Split] = None, customer: Customer = None, sub_account: str = None, expires_date: str = None, expires_in: int = 900, type: ChargeType = ChargeType.DYNAMIC, return_existing: bool = True) -> dict[str, Any]:
+        if value <= 100:
+            raise "Value must be greater or equal than 100 (1 real)"
+        if expires_in < (15 * 60):
+            raise "Expires in must be at least 900, 15 minutes"
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = f"charge?return_existing={return_existing}"
             payload = {
                 "value": value,
                 "correlationID": str(uuid.uuid4()),
+                "type": type,
+                "expiresIn": expires_in,
+                "expiresDate": expires_date,
+                "customer": customer,
+                "subaccount": sub_account,
+                "splits": splits
             }
-            print(payload)
             response = await http_client.post(url=endpoint, headers=self._headers, json=payload)
             return response["charge"]
 

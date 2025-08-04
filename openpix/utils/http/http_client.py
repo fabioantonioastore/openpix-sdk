@@ -40,6 +40,14 @@ class HTTPClient:
     async def close(self) -> None:
         await self._session.close()
 
+    async def __construct_payload(self, payload: dict[str, Any]) -> dict[str, Any]:
+        new_payload = dict()
+        for key in payload.keys():
+            if payload[key] is None:
+                continue
+            new_payload[key] = payload[key]
+        return new_payload
+
     @staticmethod
     async def __response(response: ClientResponse) -> Any:
         response.raise_for_status()
@@ -57,6 +65,8 @@ class HTTPClient:
             url = self.base_url
         if headers is None:
             headers = self.headers
+        if json:
+            json = await self.__construct_payload(json)
         async with self._session.request(
             method=method, url=url, headers=headers, json=json
         ) as response:
@@ -136,6 +146,8 @@ class HTTPClient:
             url = self.base_url
         if headers is None:
             headers = self.headers
+        if json:
+            json = await self.__construct_payload(json)
         async with self._session.request(
             method=method, url=url, headers=headers, json=json
         ) as response:
