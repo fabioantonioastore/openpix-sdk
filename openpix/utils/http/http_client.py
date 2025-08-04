@@ -12,7 +12,7 @@ class HTTPClient:
         self._headers = headers
         if self._headers is None:
             self._headers = {}
-        self._session = ClientSession(base_url=base_url, headers=headers)
+        self._session = ClientSession(base_url=self.base_url, headers=self.headers)
 
     @property
     def base_url(self) -> str:
