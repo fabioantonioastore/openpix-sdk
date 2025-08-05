@@ -45,6 +45,12 @@ class HTTPClient:
         for key in payload.keys():
             if payload[key] is None:
                 continue
+            if isinstance(payload[key], list):
+                for item in payload[key]:
+                    item = await self.__construct_payload(item)
+            if isinstance(payload[key], dict):
+                new_payload[key] = await self.__construct_payload(payload[key])
+                continue
             new_payload[key] = payload[key]
         return new_payload
 
