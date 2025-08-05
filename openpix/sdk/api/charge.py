@@ -13,12 +13,14 @@ class ChargeAPI(API):
         super().__init__(url=url, headers=headers)
 
     async def get_image_qr_code(self, *, payment_link_id: str, size: int = 1024) -> str:
+        raise NotImplemented
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = f"charge/brcode/image/{payment_link_id}?size={size}"
             return await http_client.get(url=endpoint, headers=self._headers)
 
 
     async def get_encoded_qr_code(self, *, encode: str = "base64", correlation_id: str, size: int = 1024) -> dict[str, Any]:
+        raise NotImplemented
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = f"charge/brcode/image/{correlation_id}?size={size}"
             return await http_client.get(url=endpoint, headers=self._headers)
@@ -29,6 +31,7 @@ class ChargeAPI(API):
             return await http_client.delete(url=endpoint, headers=self._headers)
 
     async def edit_expiration_date(self, *, correlation_id: str, expires_date: str | date) -> dict[str, Any]:
+        raise NotImplemented
         if isinstance(expires_date, date):
             expires_date = str(expires_date)
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
@@ -45,6 +48,7 @@ class ChargeAPI(API):
             return response["charge"]
 
     async def get_list(self, *, start: str, end: str, status: str, customer_correlation_id: str, subscription_correlation_id) -> list[dict[str, Any]]:
+        raise NotImplemented
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = "charge?"
             if start:
@@ -62,6 +66,7 @@ class ChargeAPI(API):
             return response["charge"]
 
     async def stream_get_list(self, *, start: str, end: str, customer_correlation_id: str, subscription_correlation_id: str) -> AsyncIterator:
+        raise NotImplemented
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = "charge?"
             if start:

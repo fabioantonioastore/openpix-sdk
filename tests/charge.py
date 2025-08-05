@@ -1,3 +1,4 @@
+import datetime
 from asyncio import run
 
 from openpix import OpenPix
@@ -17,6 +18,8 @@ async def main():
     correlation_id = response["correlationID"]
     print(response)
     response = await charge.get(correlation_id=correlation_id)
+    print(response)
+    response = await charge.delete(correlation_id=correlation_id)
     print(response)
 
 
