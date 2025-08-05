@@ -81,10 +81,10 @@ class ChargeAPI(API):
         if expires_in < (15 * 60):
             raise "Expires in must be at least 900, 15 minutes"
         if customer:
-            customer = customer.to_dict()
+            customer = await customer.to_dict()
         if splits:
             for split in splits:
-                split = split.to_dict()
+                split = await split.to_dict()
         async with HTTPClient(base_url=self._url, headers=self._headers) as http_client:
             endpoint = f"charge?return_existing={return_existing}"
             payload = {
