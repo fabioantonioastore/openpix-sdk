@@ -10,7 +10,7 @@ async def main():
     response = await webhook.create(
         name="hello",
         event=WebHookEvents.CHARGE_CREATED,
-        url="https://church-app-backend-ajbu.onrender.com",
+        url="https://church-app-backend-ajbu.onrender.com/webhook",
         authorization=TEST_APP_ID,
         is_active=True
     )
